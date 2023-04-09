@@ -78,11 +78,11 @@ app.delete('/api/notes/:id', (request, response, next) => {
     Note.findByIdAndUpdate(
       request.params.id,
       { content, important },
-      { new: true, runValidators: true, context: 'query' }
+      { new: true, runValidators: true, context: 'query' })
       .then(updatedNote => {
         response.json(updatedNote)
       })
-      .catch(error => next(error)))
+      .catch(error => next(error))
   })
 
 const PORT = process.env.PORT
