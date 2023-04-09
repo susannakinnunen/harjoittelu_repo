@@ -26,27 +26,25 @@ const note = new Note({
 })
 
 const note_two = new Note({
-    content: "Browser can execute only JavaScript",
-    important: false,
+  content: 'Browser can execute only JavaScript',
+  important: false,
+})
+
+Note.find({ important: true }).then(result => {
+  result.forEach(note => {
+    console.log(note)
   })
+  mongoose.connection.close()
+})
 
-Note.find({important: true}).then(result => {
-    result.forEach(note => {
-      console.log(note)
-    })
-    mongoose.connection.close()
-  })
-  
-
-
-/*note.save().then(result => {
+note.save().then(result => {
   console.log('note saved!')
   console.log(result)
   mongoose.connection.close()
 })
 
 note_two.save().then(result => {
-    console.log('note saved!')
-    console.log(result)
-    mongoose.connection.close()
-  })*/
+  console.log('note saved!')
+  console.log(result)
+  mongoose.connection.close()
+})

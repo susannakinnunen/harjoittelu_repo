@@ -7,24 +7,6 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(cors())
 
-let notes = [
-    {
-      id: 1,
-      content: "HTML is easy",
-      important: true
-    },
-    {
-      id: 2,
-      content: "Browser can execute only JavaScript",
-      important: false
-    },
-    {
-      id: 3,
-      content: "GET and POST are the most important methods of HTTP protocol",
-      important: true
-    }
-  ]
-
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
@@ -49,41 +31,42 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
-  app.post('/api/notes', (request, response, next) => {
-    const body = request.body
-  
-    if (body.content === undefined) {
-      return response.status(400).json({ error: 'content missing' })
-    }
-  
-    const note = new Note({
-      content: body.content,
-      important: body.important || false,
-    })
-  
-    note.save().then(savedNote => {
-      response.json(savedNote)
-    })
-    .catch(error => next(error))
+app.post('/api/notes', (request, response, next) => {
+  const body = request.body
+
+  if (body.content === undefined) {
+    return response.status(400).json({ error: 'content missing' })
+  }
+
+  const note = new Note({
+    content: body.content,
+    important: body.important || false,
   })
 
-  app.put('/api/notes/:id', (request, response, next) => {
-    const { content, important } = request.body
-  
-    Note.findByIdAndUpdate(
-      request.params.id,
-      { content, important },
-      { new: true, runValidators: true, context: 'query' })
-      .then(updatedNote => {
-        response.json(updatedNote)
-      })
-      .catch(error => next(error))
+  note.save().then(savedNote => {
+    response.json(savedNote)
   })
+    .catch(error => next(error))
+})
+
+app.put('/api/notes/:id', (request, response, next) => {
+  const { content, important } = request.body
+
+  Note.findByIdAndUpdate(
+    request.params.id,
+    { content, important },
+    { new: true, runValidators: true, context: 'query' }
+  )
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
@@ -108,5 +91,5 @@ const errorHandler = (error, request, response, next) => {
   }
   next(error)
 }
- 
+
 app.use(errorHandler)
