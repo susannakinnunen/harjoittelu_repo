@@ -82,7 +82,7 @@ app.delete('/api/notes/:id', (request, response, next) => {
       .then(updatedNote => {
         response.json(updatedNote)
       })
-      .catch(error => next(error))
+      .catch(error => next(error)))
   })
 
 const PORT = process.env.PORT
