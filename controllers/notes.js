@@ -38,10 +38,14 @@ notesRouter.delete('/:id', async (request, response) => {
 notesRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
+  console.log('body', body)
+
   const note = {
     content: body.content,
     important: body.important,
   }
+
+  console.log('notte', note)
 
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
     .then(updatedNote => {
