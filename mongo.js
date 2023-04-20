@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 if (process.argv.length<3) {
   console.log('give password as argument')
   process.exit(1)
@@ -7,9 +8,8 @@ if (process.argv.length<3) {
 
 const password = process.argv[2]
 
-const url =
-  `mongodb+srv://harjoittelu_notes:${password}@cluster0.1cg5anc.mongodb.net/noteApp?retryWrites=true&w=majority`
-
+const url = `mongodb+srv://harjoittelu_notes:${password}@cluster0.1cg5anc.mongodb.net/testit?retryWrites=true&w=majority`
+console.log('url', url)
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
 
@@ -34,7 +34,6 @@ Note.find({ important: true }).then(result => {
   result.forEach(note => {
     console.log(note)
   })
-  mongoose.connection.close()
 })
 
 note.save().then(result => {
